@@ -10,18 +10,26 @@
 	
     <!-- Define your beans here -->
     
-    <!-- define the dependency -->
-    <bean id="myFortuneService"
-    		class="com.luv2code.springdemo.HappyFortuneService">
-    	</bean>
+    <!-- behind the scene, spring will do HappyFortuneService myFortuneService = new HappyFortuneService() -->
+    <bean id="myFortuneService" class="com.luv2code.springdemo.HappyFortuneService"></bean>
     
- 	<bean id="myCoach"
- 		class="com.luv2code.springdemo.TrackCoach">	
- 		
- 		<!-- set up constructor injection -->
+	<!-- constructor injection
+		behind the scene, spring will do Coach myCoach = new TrackCoach(myFortuneService) -->    
+ 	<bean id="myCoach" class="com.luv2code.springdemo.TrackCoach">	
  		<constructor-arg ref="myFortuneService" />
  	</bean>
-    
+ 	
+        
+    <bean id="myCricketCoach" class="com.luv2code.springdemo.CricketCoach">
+    	<!-- Setter injection,
+    	spring will automatically use property name to find a setter method set+{capitalized property name}(...)
+    	in this case, property name is fortuneServicem, so it will look for setFortuneService()-->
+    	<property name="fortuneService" ref="myFortuneService" />
+    	
+    	<!-- for injecting literal value, use value=...  will call setter method set+value()-->
+    	<property name="emailAddress" value="thebestcoach@luv2code.com" />
+    	<property name="team" value="Sunrisers Hyderabad" />
+    </bean>
 </beans>
 
 
